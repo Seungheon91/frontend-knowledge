@@ -88,7 +88,7 @@ var 키워드로 이름이 동일한 변수를 중복 선언하면 아무런 에
 let foo = 123;
 let foo = 456;  // SyntaxError: Identifier 'foo' has already been declared
 ```
-2. 블록 레벨 스코프
+2.블록 레벨 스코프
 
 
 
@@ -103,20 +103,14 @@ console.log(foo); // 1
 console.log(bar); // ReferenceError: bar is not defined
 
 ```
-3. 변수 호이스팅
-
-
-
+3.변수 호이스팅
 var 키워드로 선언한 변수와 달리 let 키워드로 선언한 변수는 변수 호이스팅이 발생하지 않는 것처럼 동작한다.
 var 키워드였다면 변수 호이스팅에 의해 런타임 이전에 변수가 선언되어 undefined를 출력해야 한다. 하지만 let 키워드에서는 참조에러가 나타난다.
 let 키워드로 선언한 변수는 '선언 단계'와 '초기화 단계'가 분리되어 진행된다. 즉, 런타임 이전에 자바스크립트 엔진에 의해 암묵적으로 선언 단계가 먼저 실행되지만 초기화 단계는 변수 선언문에 도달했을 때 실행된다. 만약 초기화 단계가 실행되기 이전에 변수에 접근하려고 하면 참조 에러가 발생한다.
 
 let 키워드로 선언한 변수는 스코프의 시작 지점부터 초기화 단계 시작 지점(변수 선언문)까지 변수를 참조할 수 없다. 스코프의 시작 지점부터 초기화 시작 지점까지 변수를 참조할 수 없는 구간을 일시적 사각지대(TDZ: Temporal Dead Zone) 라 부른다.
 
-4. 전역 객체와 let
-
-
-
+4.전역 객체와 let
 let 키워드로 선언한 전역 변수는 전역 객체의 프로퍼티가 아니다. 즉, window.foo와 같이 접근할 수 없다.
 ```javascript
 let x = 1;
@@ -129,10 +123,7 @@ console.log(x); // 1
 ### const 키워드
 const 키워드는 상수(constant)를 선언하기 위해 사용하지만, 반드시 상수만을 위해 사용하지는 않는다. const 키워드의 특징은 let과 대부분 동일하므로 let 키워드와 다른 점을 중심으로 살펴볼 필요가 있다.
 
-1. 선언과 초기화
-
-
-
+1.선언과 초기화
 const 키워드로 선언한 변수는 반드시 선언과 동시에 초기화해야 한다. 그렇지 않을 경우 문법 에러(SyntaxError)가 발생한다.
 ```javascript
 const bar = 1;
@@ -141,19 +132,13 @@ console.log(bar); >>> 1
 const foo;
 console.log(foo); >>> // SyntaxError: Missing initializer in const declaration
 ```
-2. 재할당 금지
-
-
-
+2.재할당 금지
 var 또는 let 키워드로 선언한 변수는 재할당이 자유로우나 const 키워드로 선언한 변수는 재할당이 금지된다.
 ```javascript
 const foo = 1;
 foo = 2; // TypeError: Assignment to constant variable.
 ```
-3. 상수
-
-
-
+3.상수
 const 키워드로 선언한 변수에 원시 값을 할당한 경우 변수 값을 변경할 수 없다. 원시 값은 변경 불가능한 값이므로 재할당 없이 값을 변경할 수 있는 방법이 없기 때문이다. 이러한 특징을 이용해 const 키워드를 상수를 표현하는 데 사용하기도 한다.
 ```javascript
 // 세율을 의미하는 0.1은 변경할 수 없는 상수로서 사용될 값이다.
