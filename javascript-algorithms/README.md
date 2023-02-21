@@ -1,11 +1,11 @@
 # 목차
 - 데이터 구조
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">연결 리스트</a>
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">이중 연결 리스트</a>
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">스택</a>
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">큐</a>
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">트리</a>
-  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/READ.md">큐</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">연결 리스트</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">이중 연결 리스트</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">스택</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">큐</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">트리</a>
+  - <a href="https://github.com/Seungheon91/front-end-knowledge/blob/main/javascript-algorithms/data-structures/stack/README.md">큐</a>
 - 정렬 알고리즘
   - 버블 정렬(Bubble sort)
   - 선택 정렬
