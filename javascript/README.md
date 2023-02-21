@@ -325,3 +325,84 @@ if (!"") console.log("" + " is falsy value");
 ```
 <br/><br/>
 
+## 배열
+### 자바스크립트 배열은 자료구조의 배열과 같은가?
+자료구조에서 말하는 배열은 동일한 크기의 메모리 공간이 빈틈없이 연속적으로 나열된 자료구조를 말한다.
+
+즉, 배열의 요소는 하나의 데이터 타입으로 통일되어 있으며 서로 연속적으로 인접해 있다. 이러한 배열은 밀집 배열(dense array)이라 한다.
+
+자바스크립트의 배열은 지금까지 살펴본 자료구조에서 말하는 일반적인 의미의 배열과 다르다.
+
+즉, 배열의 요소를 위한 각각의 메모리 공간은 동일한 크기를 갖지 않아도 되며, 연속적으로 이어져 있지 않을 수도 있다.
+
+배열의 요소가 연속적으로 이어져 있지 않는 배열을 희소 배열(sparse array)이라 한다.
+
+이처럼 자바스크립트의 배열(희소 배열)은 엄밀히 말해 일반적인 의미의 배열이 아니다. 자바스크립트의 배열은 일반적인 배열의 동작을 흉내 낸 특수한 객체다.
+<br/><br/>
+
+### 배열의 메서드
+- 원본 배열을 직접 변경하는 메서드
+- 원본 배열을 직접 변경하지 않고 새로운 배열을 생성하여 반환하는 메서드
+
+원본 배열을 직접 변경하는 메서드는 외부 상태를 직접 변경하는 부수효과가 있으므로 사용할 때 주의해야 한다.
+
+가급적 원본 배열을 직접 변경하지 않는 메서드를 사용하는 편이 좋다.
+
+```
+Array.isArray 🌟
+Array.prototype.indexOf 🌟
+Array.prototype.push (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.pop (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.unshift (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.shift (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.concat 🌟
+Array.prototype.splice 🌟 (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.slice 🌟
+Array.prototype.join 🌟 (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.reverse 🌟 (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.fill 🌟 (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.includes 🌟
+```
+<br/><br/>
+
+### 고차 함수
+고차 함수(Higher-Order Function, HOF)는 함수를 인수로 전달받거나 함수를 반환하는 함수를 말한다.
+
+자바스크립트의 함수는 일급 객체이므로 함수를 값처럼 인수로 전달할 수 있으며 반환할 수도 있다.
+
+고차 함수는 외부 상태의 변경이나 가변(mutable) 데이터를 피하고 불변성(immutability)을 지향하는 함수형 프로그래밍에 기반을 두고 있다.
+
+함수형 프로그래밍은 순수 함수와 보조 함수의 조합을 통해 로직 내에 존재하는 조건문과 반복문을 제거하여 복잡성을 해결하고 변수의 사용을 억제하여 상태 변경을 피하려는 프로그래밍 패러다임이다.
+
+함수형 프로그래밍은 순수 함수를 통해 부수 효과를 최대한 억제하여 오류를 피하고 프로그램의 안정성을 높이려는 노력의 일환이라고 할 수 있다.
+
+대부분의 고차 함수들은 파라미터로 콜백 함수를 받아 사용되기 때문에 원본 배열을 바탕으로 하는 새로운 결과값을 창조하는데 사용된다
+
+```
+Array.prototype.sort (원본 배열을 변경한다 - 부수효과 o)
+Array.prototype.forEach
+Array.prototype.map
+Array.prototype.filter
+Array.prototype.reduce
+Array.prototype.some
+Array.prototype.every
+Array.prototype.find
+```
+<br/><br/>
+
+***forEach()***
+```javascript
+// forEach 메서드는 콜백 함수를 호출하면서 3개(① 요소값 ② 인덱스 ③ this)의 인수를 전달한다.
+[1, 2, 3].forEach((item, index, arr) => {
+  console.log(`요소값: ${item}, 인덱스: ${index}, this: ${arr}`);
+});
+
+/*
+요소값: 1, 인덱스: 0, this: [1,2,3]
+요소값: 2, 인덱스: 1, this: [1,2,3]
+요소값: 3, 인덱스: 2, this: [1,2,3]
+*/
+```
+
+
+
