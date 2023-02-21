@@ -209,7 +209,7 @@ var observable$ = fromEvent(document, "click"); // RxJS 옵저버블
 자바스크립트 엔진은 코드가 실행되는 시점인 런타임에 리터럴을 평가해 값을 생성합니다.
 
 <br/><br/>
-# 데이터 타입
+## 데이터 타입
 ### 데이터 타입 종류
 **구분**|**데이터 타입**|**설명**|
 |:---:|:---:|:---:|
@@ -246,7 +246,7 @@ C나 자바 같은 정적 타입언어는 변수를 선언할 때 변수에 할�
 
 자바스크립트의 변수는 선언이 아닌 할당에 의해 타입이 결정 (타입 추론) 된다. 그리고 재할당에 의해 변수의 타입은 언제든지 동적으로 변할 수 있다. 이러한 특징을 동적 타이핑이라고 하며, 자바스크립트를 정적 타입 언어와 구별하기 위해 동적 타입 언어라고 한다. 대표적인 동적 타입 언어로는 자바스크립트, 파이썬, PHP 등이 있다.
 
-```
+```javascript
 var foo;
 console.log(typeof foo); // undefined
 
@@ -268,4 +268,59 @@ console.log(typeof foo); // object
 foo = function () {}; // 함수
 console.log(typeof foo); // function
 ```
+<br/><br/>
+
+## 타입변환과 단축 평가
+### 명시적 타입 변환
+자바스크립트의 모든 값은 타입이 있다. 값의 타입은 개발자의 의도에 따라 다른 타입으로 변환할 수 있다. 개발자가 의도적으로 값의 타입을 변환하는 것을 명시적 타입 변환 또는 타입 캐스팅이라 한다.
+```javascript
+var x = 10;
+
+// 숫자를 문자열로 타입 캐스팅한다.
+var str = x.toString();
+console.log(typeof str, str); // string 10
+
+// x 변수의 값이 변경된 것은 아니다.
+console.log(typeof x, x); // number 10
+```
+<br/><br/>
+
+### 암묵적 타입 변환
+개발자의 의도와는 상관없이 표션식을 평가하는 도중에 자바스크립트 엔진에 의해 암묵적으로 타입이 자동 변환되기도 한다. 이를 암묵적 타입 변환 또는 강제 타입 변환이라 한다.
+```javascript
+var x = 10;
+
+// 문자열 연결 연산자 ( + )는 숫자 타입 x의 값을 바탕으로 새로운 문자열을 생성한다.
+var str = x + "";
+console.log(typeof str, str); // string 10
+
+// x 변수의 값이 변경된 것은 아니다.
+console.log(typeof x, x); // number 10
+```
+<br/><br/>
+
+### truthy / falsy 한 값
+자바스크립트 엔진은 불리언 타입이 아닌 값을 Truthy 값(참으로 평가되는 값) 또는 Falsy 값(거짓으로 평가되는 값)으로 구분한다. 즉, 제어문의 조건식과 같이 불리언 값으로 평가되어야 할 문맥에서 Truthy값은 true로, Falsy값은 false로 암묵적 타입 변환된다.
+
+아래 값들은 false로 평가되는 Falsy 값이다.
+```javascript
+false
+undefined
+null
+0, -0
+NaN
+' '(빈 문자열)
+```
+Falsy값에 ! 연산자를 붙이면, 모두 Truthy 값으로 평가되어 실행 가능해진다.
+
+```javascript
+// 아래의 조건문은 모두 코드 블록을 실행한다.
+if (!false) console.log(false + " is falsy value");
+if (!undefined) console.log(undefined + " is falsy value");
+if (!null) console.log(null + " is falsy value");
+if (!0) console.log(0 + " is falsy value");
+if (!NaN) console.log(NaN + " is falsy value");
+if (!"") console.log("" + " is falsy value");
+```
+<br/><br/>
 
