@@ -42,3 +42,22 @@ DOM 자체는 빠르지만 규모가 큰 웹 애플리케이션에서 DOM에 직
 ### 기타 특징
 리액트는 프레임워크가 아니라 라이브러리이기 때문에 다른 개발자들이 만든 라이브러리를 취향대로 선택해서 스택을 설정하거나 기타 기능은 직접 구현해서 사용해야 합니다.
 라우팅에는 리액트 라우터, Ajax 처리는 axios나 fetch, 상태관리는 리덕스나 Mobx등의 라이브러리를 리액트와 같이 많은 사람들이 사용하고 있습니다.
+
+## JSX란?
+JSX는 자바스크립트의 확장 문법이며 XML과 매우 비슷하게 생겼습니다. JSX는 브라우저에서 실행되기 전에 코드가 번들링되는 과정에서 바벨을 사용하여 일반 자바스크립트 형태의 코드로 변환됩니다.
+
+```javascript
+// JSX
+function App() {
+  return(
+    <div>
+      Hello <b>react</b>
+    </div>
+   );
+}
+
+// 바벨이 Javascript 코드로 변환
+function App() {
+  return React.createElement("div", null, "Hello ", React.createElement("b", null, "react"))
+```
+
