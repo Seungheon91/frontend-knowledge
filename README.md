@@ -6,3 +6,4 @@
 - [자료구조 & 알고리즘](https://github.com/Seungheon91/front-end-knowledge/tree/main/javascript-algorithms)
 - [리액트](https://github.com/Seungheon91/front-end-knowledge/tree/main/react)
 - [뷰](https://github.com/Seungheon91/front-end-knowledge/tree/main/vue)
+- [타입스크립트](https://github.com/Seungheon91/front-end-knowledge/tree/main/typescript)
