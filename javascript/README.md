@@ -1447,4 +1447,59 @@ HTTP 요청 대상을 "리소스"라고 부르는데, 그에 대한 본질을 �
 DNS (Domain Name System)는 인터넷에 연결된 리소스를 위한 계층적이고 분산된 명명 시스템입니다. DNS는 도메인 이름 목록 과 연결된 리소스(예: IP 주소)를 유지 관리 합니다.
 
 ### script 태그를 body 태그 밑에 둬야하는 이유?
+1. HTML을 읽는 과정에 스크립트를 만나면 중단 시점이 생기고 그만큼 Display에 표시되는 것이 지연됨
+2. DOM 트리가 생성되기전에 자바스크립트가 생성되지도 않은 DOM의 조작을 시도할 수 있다.
 
+### async/defer 어트리뷰트
+동기적으로 코드를 실행하는 자바스크립트에서 이러한 근본적인 문제를 해결하기 위해 <script> 태그에 ① async ② defer 어트리뷰트가 추가되었다.
+
+① async ② defer 어트리뷰트는 다음과 같이 src 어트리뷰트를 통해 외부 자바스크립트 파일을 로드하는 경우에만 사용할 수 있다. 위 코드처럼 <script> 태그 내부에 코드를 작성하는 경우에는 사용할 수 없다.
+
+1. async
+HTML 파싱과 외부 자바스크립트 파일의 로드가 비동기적으로 동시에 진행된다. 단, 자바스크립트의 파싱과 실행은 자바스크립트의 파일의 로드가 완료된 직후 진행되며, 이때 HTML 파싱은 중단된다.
+여러 개의 script 태그에 async 어트리뷰트를 지정하면 script 태그의 순서와는 상관없이 로드가 완료된 자바스크립트부터 먼저 실행되므로 순서가 보장되지 않는다.
+![image](https://user-images.githubusercontent.com/78462110/233821156-dde8ff97-200c-4bfd-9923-961c01739987.png)
+
+
+2. defer
+async 어트리뷰트와 마찬가지로 HTML 파싱과 외부 자바스크립트 파일의 로드가 비동기적으로 동시에 진행된다. 단, 자바스크립트의 파싱과 실행은 HTML 파싱이 완료된 직후, 즉 DOM 생성이 완료된 직후 진행된다. 따라서 DOM 생성이 완료된 이후 실행되어야 할 자바스크립트에 유용하다.
+![image](https://user-images.githubusercontent.com/78462110/233821213-8c7b20a1-e5ff-4e7d-92c0-907c6303b27d.png)
+
+### script 내부에서 로딩 순서 제어 (DOMContentLoaded 와 onload)
+DOMContentLoaded와 onload를 활용하면 javascript 자체에서 로딩 순서를 제어할 수도 있습니다.
+DOMContentLoaded 내부의 코드는 DOM 생성이 끝난 후에 실행되고
+onload 내부의 코드는 문서에 포함된 모든 콘텐츠(images, script, css, ...)가 전부 로드된 후에 실행됩니다.
+
+``` javascript
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>DOMContentLoaded</title>
+</head>
+<body>
+    <script>
+    	// window.onload가 가장 앞에 위치!
+        window.onload = function(){
+            console.log("afterwindowload");
+            var target = document.querySelector("#test");
+            console.log(target);
+        }
+		// DOMContentLoaded가 두번째에 위치!
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("afterdomload");
+            var target = document.querySelector('#test');
+            console.log(target);
+        });
+		// 일반 script 코드가 가장 끝에 위치
+        console.log("바로시작")
+        var target = document.querySelector('#test');
+        console.log(target);
+    </script>
+    <div id="test">test</div>
+</body>
+</html>
+```
+위 코드의 console 출력 결과는 일반 script > DOMContentLoaded 안의 코드 > window.onload 안의 코드 순으로 출력됩니다.
+
+![image](https://user-images.githubusercontent.com/78462110/233821360-dbc19bf0-1501-4438-896e-b70e09358d33.png)
