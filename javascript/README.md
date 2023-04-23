@@ -1503,3 +1503,31 @@ onload 내부의 코드는 문서에 포함된 모든 콘텐츠(images, script, 
 위 코드의 console 출력 결과는 일반 script > DOMContentLoaded 안의 코드 > window.onload 안의 코드 순으로 출력됩니다.
 
 ![image](https://user-images.githubusercontent.com/78462110/233821360-dbc19bf0-1501-4438-896e-b70e09358d33.png)
+
+## DOM
+
+### DOM 이란?
+DOM은 HTMl 문서의 계층적 구조와 정보를 표현하며 이를 제어할 수 있는 API, 즉 프로퍼티와 메서드를 제공하는 트리 자료구조
+
+### DOM 구성요소
+HTML 요소는 렌더링 엔진에 의해 파싱되어 DOM을 구성하는 요소 노드 객체로 변환됨
+이때 HTML 요소 어트리뷰트는 어트리뷰트 노드로, HTML 요소의 텍스트 콘텐츠는 텍스트 노드로 변환된다.
+DOM은 노드 객체의 계층적인 구조로 구성된다. 노드 객체는 종류가 있고 상속 구조를 갖는다.
+노드 객체는 총 12개의 종류(노드 타입)가 있다. 이 중에서 중요한 노드 타입은 다음과 같이 4가지이다.
+
+1. 문서 노드
+`<!DOCTYPE>`
+문서 노드는 DOM 트리의 최상위에 존재하는 루트 노드로서 document 객체를 가리킨다.
+
+document 객체는 브라우저가 렌더링한 HTML 문서 전체를 가리키는 객체로서 전역 객체 window의 document 프로퍼티에 바인딩되어 있다.
+
+따라서 문서 노드는 window.documnet 또는 document로 참조할 수 있다.
+
+브라우저 환경의 모든 자바스크립트 코드는 script 태그에 의해 분리되어 있어도 하나의 전역 객체 window를 공유한다.
+
+따라서 window의 document 프로퍼티에 바인딩되어 있는 하나의 document 객체를 바라본다. 즉, HTML 문서당 document 객체는 유일하다.
+
+2. 요소 노드
+
+3. 어트리뷰트 노드
+4. 텍스트 노드
