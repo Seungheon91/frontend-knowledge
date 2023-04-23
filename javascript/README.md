@@ -1702,3 +1702,154 @@ DIV
 
 ```
 
+### 이벤트 위임(delegation)
+연속되는 태그에 대해서 공통적으로 이벤트를 줘야할 때 우리가 이벤트 핸들러를 바인딩할 해당 요소의 부모 요소에게 이를 위임하여 이벤트를 진행하는 것을 이벤트 위임이라 합니다.
+
+``` javascript
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eventDelegation</title>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .btn-number {
+        background-color: yellowgreen;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <button class="btn-number">1</button>
+      <button class="btn-number">2</button>
+      <button class="btn-number">3</button>
+      <button class="btn-number">4</button>
+      <button class="btn-number">5</button>
+    </div>
+    <script>
+      const div = document.querySelector("div");
+
+      div.addEventListener("click", (e) => {
+        console.log(e.target.innerHTML);
+      });
+    </script>
+  </body>
+</html>
+
+```
+만약 공통되는 button 태그에 대해서 이벤트를 준다면, 버튼별 이벤트 onclick 또는 addEventListener 메서드를 사용하여 각 버튼에 해당되는 로직을 바인딩해줘야 합니다.
+
+하지만 이벤트 위임을 통해 부모 요소에 이 작업을 위임하여 현재 클릭하는 타깃(e.target)에 대한 값을 출력할 수 있습니다.
+
+### e.preventDefault
+e.preventDefault 메서드는 요소 태그의 기본 동작을 중단합니다.
+
+``` javascript
+<!DOCTYPE html>
+<html>
+  <body>
+    <a href="https://www.google.com">go</a>
+    <input type="checkbox" />
+    <script>
+      document.querySelector("a").onclick = (e) => {
+        // a 요소의 기본 동작을 중단한다.
+        e.preventDefault();
+      };
+
+      document.querySelector("input[type=checkbox]").onclick = (e) => {
+        // checkbox 요소의 기본 동작을 중단한다.
+        e.preventDefault();
+      };
+    </script>
+  </body>
+</html>
+```
+
+### e.stopPropagation
+e.stopPropagation 메서드는 이벤트 전파를 중지시키는 메서드입니다.
+이벤트 객체의 경우 상위 태그에도 같은 이벤트가 존재한다면(예를 들어 click 어트리뷰트가 두 요소 모두 존재하는 경우) 상위 태그의 해당 콜백 함수를 호출하는 특징이 있습니다.
+
+``` javascript
+<!DOCTYPE html>
+<html>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    div {
+      width: 100%;
+      height: 100vh;
+      background-color: tomato;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      width: 100px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <div>
+      <button>Button</button>
+    </div>
+    <script>
+      const div = document.querySelector("div");
+      const button = document.querySelector("button");
+
+      div.addEventListener("click", () => {
+        console.log("DIV");
+      });
+
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        console.log("BUTTON");
+      });
+    </script>
+  </body>
+</html>
+```
+
+## 타이머
+### 호출 스케쥴링
+함수를 명시적으로 호출하지 않고 일정 시간이 경과된 이후에 호출되도록 함수 호출을 예약하려면, 타이머 함수를 사용해야함 
+
+이렇게 타이머 함수를 사용하여 명시적으로 호출하지 않고 일정 시간이 경과된 이후에 호출되도록 함수 호출을 예약하는 것을 호출 스케쥴링이라고 합니다.
+
+### 타이머 함수
+1. setTimeout/clearTimeout
+- setTimeout 함수로 생성한 타이머는 한 번 동작합니다.
+- setTimeout 함수는 생성된 타이머를 식별할 수 있는 고유한 타이머를 식별할 수 있는 고유한 id를 반환한다.
+- setTimeout 함수가 반환한 타이머 id는 브라우저 환경일 경우 숫자 node.js 환경인 경우 객체이다.
+
+``` javascript
+// setTimeout 스펙
+const timeoutdId = setTimeout(func|code[, delay, param1, param2, ...]);
+
+// 1초(1000ms) 후 타이머가 만료되면 콜백 함수가 호출된다.
+setTimeout(() => console.log("Hi!"), 1000);
+
+// 세 번째 인수로 문자열 'Lee' 전달
+setTimeout((name) => console.log(`Hi! ${name}.`), 1000, "Lee");
+
+// 두 번째 인수(delay)를 생략하면 기본값 0이 지정된다.
+```
+
+setTimeout 함수가 반환한 타이머 id를 clearTimeout 함수의 인수로 전달하ㅏ여 타이머를 취소할 수 있다.
+
+``` javascript
+const timerId = setTimeout(() => console.log("Hi!"), 1000);
+console.log(timeId);
+
+clearTimeout(timerId);
+```
+
+2. setInterval/clearInterval
