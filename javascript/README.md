@@ -2510,6 +2510,7 @@ REST API는 ① 자원(resource), ② 행위 (verb), ③ 표현 (representations
 |자원(resource)|자원|URL(엔드 포인트)|
 |행위(verb)|자원에 대한 행위|HTTP 요청 메서드|
 |표현(representations)|자원에 대한 행위의 구체적 내용|페이로드|
+	
 <br/><br/>
 	
 ### REST API를 설계하는 중요 원칙
@@ -2543,7 +2544,7 @@ GET /todos/1
 |PATCH|modify|리소스의 일부 수정|O|
 |DELETE|delete|모든/특정 리소스의 삭제|O|
 
-예제 코드
+<br/><br/>	
 GET 요청(전체)
 ```javascript
 <!DOCTYPE html>
@@ -2568,7 +2569,8 @@ GET 요청(전체)
   </body>
 </html>
 ```
-
+<br/><br/>
+	
 GET 요청(일부)
 ```javascript
 <!DOCTYPE html>
@@ -2599,7 +2601,8 @@ GET 요청(일부)
   </body>
 </html>
 ```
-
+<br/><br/>
+	
 POST 요청
 ```javascript
 <!DOCTYPE html>
@@ -2630,7 +2633,8 @@ POST 요청
   </body>
 </html>
 ```
-
+<br/><br/>
+	
 PATCH 요청
 ```javascript
 <!DOCTYPE html>
@@ -2660,7 +2664,8 @@ PATCH 요청
   </body>
 </html>
 ```
-
+<br/><br/>
+	
 DELETE 요청
 ```javascript
 <!DOCTYPE html>
@@ -2711,6 +2716,7 @@ DELETE 요청
 **상태코드**|**코드명**|**의미**|
 |:---:|:---:|:---:|
 |500|Internal Server Error|서버가 처리 방법을 모르는 상황|
+	
 <br/><br/>
 	
 ## Promise
