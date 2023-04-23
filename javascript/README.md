@@ -2174,5 +2174,647 @@ bar();
 5. 비동기로 진행되는 함수 ① setTimeout/ setInterval ② HTTP 요청 ③ 이벤트 핸들러 은 브라우저에 의해 태스크 큐로 이동하게 되는데, 동기적으로 실행되는 함수가 모두 실행되고 콜 스택에서 팝된 이후에 태스크 큐에 먼저 들어온 함수부터 차례대로 콜스택에 푸시한다
 
 
-### 마이크로태스크큐 
-5. 비동기로 진행되는 함수 ① setTimeout/ setInterval ② HTTP 요청 ③ 이벤트 핸들러 은 브라우저에 의해 태스크 큐로 이동하게 되는데, 동기적으로 실행되는 함수가 모두 실행되고 콜 스택에서 팝된 이후에 태스크 큐에 먼저 들어온 함수부터 차례대로 콜스택에 푸시한다
+### 마이크로태스크 큐  
+마이크로태스크 큐는 태스크큐와 별도의 큐로 후속 처리 메서드의 콜백 함수가 일시 저장됨
+그 외의 비동기 함수 ① setTimeout/ setInterval ② HTTP 요청 ③ 이벤트 핸들러 의 콜백 함수나 이벤트 핸들러는 태스크 큐에 일시 저장된다.
+
+콜백 함수나 이벤트 핸들러를 일시 저장한다는 점에서 태스크 큐와 동일하지만 마이크로태스크 큐는 태스크 큐보다 우선순위가 높다.
+
+``` javascript
+setTimeout(() => console.log(1), 0);
+
+Promise.resolve()
+  .then(() => console.log(2))
+  .then(() => console.log(3));
+```
+프로미스의 후속 처리 메서드(then, catch, finally)도 비동기적으로 동작하므로 1>2>3 의 순으로 출력될 것처럼 보이지만 2 > 3 > 1 순으로 출력된다.
+
+프로미스의 후속 처리 메서드의 콜백 함수는 태스크 큐가 아니라 마이크로태스크 큐에 저장되기 때문이다.
+
+![image](https://user-images.githubusercontent.com/78462110/233828260-693ec61d-33e6-45e4-8779-b683885b76e8.png)
+
+### 태스크 큐와 마이크로태스크 큐 중 어떤 것이 먼저 실행되는가?
+마이크로태스크 큐는 태스크 큐보다 우선순위가 높다.
+따라서 이벤트 루프에서 마이크로태스크 큐에 쌓인 태스크를 먼저 콜 스택에 올려준 뒤, 태스크 큐에 잔여 태스크를 콜 스택에 올린다.
+
+## Ajax
+Ajax(Asynchronous JavaScript and XML)란 자바스크립트를 사용하여 ① 브라우저가 ② 서버에게 비동기 방식으로 데이터를 요청하고, 서버가 응답한 데이터를 수신하여 웹페이지를 동적으로 갱신하는 프로그래밍 방식 을 말한다.
+
+Ajax는 브라우저에서 제공하는 호스트 객체 Web API인 XMLHttpRequest 객체를 기반으로 동작한다.
+
+XMLHttpRequest는 HTTP 비동기 통신을 위한 메서드와 프로퍼티를 제공한다.
+
+이전의 웹 페이지는 html 태그로 시작해서 html 태그로 끝나는 완전한 HTML을 서버로부터 전송받아 웹 페이지 전체를 처음부터 다시 렌더링하는 방식으로 동작했다.
+
+Ajax의 등장으로 서버로부터 웹페이지의 변경에 필요한 데이터만 비동기 방식으로 전송받아 웹페이지를 변경할 필요가 없는 부분까지 다시 렌더링하지 않고, 변경할 필요가 있는 부분만 한정적으로 렌더링하는 방식이 가능해졌다.
+
+### Ajax를 사용하면 기존 방식과 어떤 차이가 있는가?
+1. 변경할 부분을 갱신하는데 필요한 데이터만 서버로부터 전송받기 때문에 불필요한 데이터 통신이 발생하지 않는다.
+
+2. 변경할 필요가 없는 부분은 다시 렌더링하지 않는다. 따라서 화면이 순간적으로 깜박이는 현상이 발생하지 않는다.
+
+3. 클라이언트와 서버와의 통신이 비동기 방식으로 동작하기 때문에 서버에게 요청을 보낸 이후 블로킹이 발생하지 않는다.
+
+### JSON
+JSON은 JavaScript Object Notation의 약자입니다.
+
+JSON은 클라이언트와 서버 간의 HTTP 통신을 위한 텍스트 데이터 포맷입니다.
+
+자바스크립트에 종속되지 않는 언어 독립형 데이터 포맷으로, 대부분의 프로그래밍 언어에서 사용할 수 있습니다.
+
+객체 리터럴과 유사하게 키와 값으로 구성된 순수한 텍스트입니다
+
+``` javascript
+{
+  "name": "Lee",
+  "age": 20,
+  "alive": true,
+  "hobby": ["traveling", "tennis"]
+}
+```
+
+### JSON이 제공하는 정적 프로토타입 메서드
+1. JSON.stringify()
+- JSON.stringify 메서드는 ① 객체를 ② JSON 포맷의 문자열로 변환한다
+- 클라이언트가 서버로 객체를 전송하려면 객체를 문자열화해야 하는데 이를 직렬화(serializing)라 한다
+2. JSON.parse()
+- JSON.parse 메서드는 ① JSON 포맷의 문자열을 ② 객체로 변환한다
+- 서버로부터 클라이언트에게 전송된 JSON 데이터는 문자열이다
+- 이 문자열을 객체로 사용하려면 JSON 포맷의 문자열을 객체화해야 하는데 이를 역직렬화(deserializing)라 한다
+
+### Ajax로 HTTP요청을 보내기 위한 방법
+
+1. XMLHttpRequest
+브라우저는 주소창이나 HTML의 form 태그 또는 a 태그를 통해 HTTP 요청 전송 기능을 기본 제공합니다
+
+자바스크립트를 사용하여 HTTP 요청을 전송하려면 XMLHttpRequest 객체를 사용합니다
+
+Web API인 XMLHttpRequest 객체는 ① HTTP 요청 전송과 ② HTTP 응답 수신을 위한 다양한 메서드와 프로퍼티를 제공합니다
+
+HTTP GET 요청
+```javascript
+// XMLHttpRequest 객체 생성
+const xhr = new XMLHttpRequest();
+
+// HTTP 요청 초기화
+xhr.open("GET", "/users");
+
+// HTTP 요청 헤더 설정
+// 클라이언트가 서버로 전송할 데이터의 MIME 타입 지정: json
+xhr.setRequestHeader("content-type", "application/json");
+
+// HTTP 요청 전송
+xhr.send();
+```
+
+HTTP POST 요청 전송
+```javascript
+// XMLHttpRequest 객체 생성
+const xhr = new XMLHttpRequest();
+
+// HTTP 요청 초기화
+xhr.open("POST", "/users");
+
+// HTTP 요청 헤더 설정
+// 클라이언트가 서버로 전송할 데이터의 MIME 타입 지정: json
+xhr.setRequestHeader("content-type", "application/json");
+
+// HTTP 요청 전송
+xhr.send(JSON.stringify({ id: 1, content: "HTML", completed: false }));
+```
+
+HTTP 응답 처리
+```javascript
+// XMLHttpRequest 객체 생성
+const xhr = new XMLHttpRequest();
+
+// HTTP 요청 초기화
+// https://jsonplaceholder.typicode.com은 Fake REST API를 제공하는 서비스다.
+xhr.open("GET", "https://jsonplaceholder.typicode.com/todos/1");
+
+// HTTP 요청 전송
+xhr.send();
+
+// load 이벤트는 HTTP 요청이 성공적으로 완료된 경우 발생한다.
+xhr.onload = () => {
+  if (xhr.status === 200) {
+    console.log(JSON.parse(xhr.response));
+    // {userId: 1, id: 1, title: "delectus aut autem", completed: false}
+  } else {
+    console.error("Error", xhr.status, xhr.statusText);
+  }
+};
+```
+
+2. Fetch
+etch 함수는 XMLHttpRequest 객체와 마찬가지로 HTTP 요청 전송 기능을 제공하는 클라이언트 사이드 Web API다.
+
+fetch 함수는 XMLHttpRequest 객체보다 사용법이 간단하고 프로미스를 지원하기 때문에 비동기 처리를 위한 콜백 패턴의 단점에서 자유롭다.
+
+fetch 함수는 비교적 최근에 추가된 Web API로서 인터넷 익스플로러를 제외한 대부분의 모던 브라우저에서 제공한다.
+
+fetch 함수에는 HTTP 요청을 전송할 URL과 HTTP 요청 메서드, HTTP 요청 헤더, 페이로드 등을 설정한 객체를 전달한다.
+
+fetch 함수는 HTTP 응답을 나타내는 Response 객체를 래핑한 Promise 객체를 반환한다.
+
+```javascript
+// fetch 함수 구조
+const promise = fetch(url [, options])
+
+fetch("https://jsonplaceholder.typicode.com/todos/1").then((response) =>
+  console.log(response)
+);
+```
+
+Response 객체
+![image](https://user-images.githubusercontent.com/78462110/233829005-b6644f78-8ad9-41ce-8fcf-f7995a0f31de.png)
+
+Response.prototype에는 Response 객체에 포함되어 있는 HTTP 응답 몸체(response.body)를 위한 다양한 메서드를 제공한다.
+
+예를 들어, fetch 함수가 반환한 프로미스가 래핑하고 있는 MIME 타입이 application/json인 HTTP 응답 몸체를 취득하려면 Response.prototype.json 메서드를 사용한다.
+
+Response.prototype.json 메서드는 Response 객체에서 HTTP 응답 몸체를 역직렬화(deserialize)한다.
+
+```javascript
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  // response는 HTTP 응답을 나타내는 Response 객체이다.
+  // json 메서드를 사용하여 Response 객체에서 HTTP 응답 몸체를 취득하여 역직렬화한다.
+  .then((response) => response.json())
+  // json은 역직렬화된 HTTP 응답 몸체이다.
+  .then((json) => console.log(json));
+// {userId: 1, id: 1, title: "delectus aut autem", completed: false}
+```
+
+### fetch로 CRUD 구현
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre></pre>
+    <script>
+      const render = (res) => {
+        console.log(res);
+        const result = JSON.stringify(res);
+        document.querySelector("pre").innerHTML = `<b>${result}</b>`;
+      };
+
+      const request = {
+        // get 메서드
+        get(url) {
+          return fetch(url);
+        },
+        // post 메서드
+        post(url, payload) {
+          return fetch(url, {
+            method: "POST",
+            headers: { "content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        },
+        // patch 메서드
+        patch(url, payload) {
+          return fetch(url, {
+            method: "PATCH",
+            headers: { "content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        },
+        // delete 메서드
+        delete(url) {
+          return fetch(url, { method: "DELETE" });
+        },
+      };
+
+      // get
+      request
+        .get("https://jsonplaceholder.typicode.com/todos/1")
+        .then((response) => response.json())
+        .then((todos) => render(todos))
+        .catch((err) => console.log(err));
+
+      // post
+      request
+        .post("https://jsonplaceholder.typicode.com/todos", {
+          userId: 1,
+          title: "JavaScript",
+          completed: false,
+        })
+        .then((response) => response.json())
+        .then((todos) => console.log(todos))
+        .catch((err) => console.log(err));
+
+      // patch
+      request
+        .patch("https://jsonplaceholder.typicode.com/todos/1", {
+          completed: true,
+        })
+        .then((response) => response.json())
+        .then((todos) => console.log(todos))
+        .catch((err) => console.log(err));
+
+      // delete
+      request
+        .delete("https://jsonplaceholder.typicode.com/todos/1")
+        .then((response) => response.json())
+        .then((todos) => console.log(todos))
+        .catch((err) => console.log(err));
+    </script>
+  </body>
+</html>
+```
+
+### XMLHttpRequest와 fetch 메서드의 차이
+fetch 메서드 또한 XMLHttpRequest 처럼 Ajax 통신을 위해 사용됩니다.
+
+하지만 fetch 메서드는 Promise를 기반으로 구성되어 있어서 더 간편하게 사용할 수 있다는 차이점이 있습니다.
+
+Promise의 후속 처리 메서드 .then() .catch() . finally() 등을 사용하여 코드를 작성할 수 있습니다.
+
+## REST API
+### REST API란?
+REST는 HTTP의 장점을 최대한 활용할 수 있는 아키텍처로서, HTTP 프로토콜을 의도에 맞게 디자인하도록 유도함
+
+REST는 HTTP를 기반으로 클라이언트가 서버의 리소스에 접근하는 방식을 규정한 아키텍처고, REST API는 REST를 기반으로 서비스 API를 구현한 것을 의미한다.
+
+REST의 기본 원칙을 성실히 지킨 서비스 디자인을 'RESTful'이라고 표함함
+
+### REST API의 구성
+REST API는 ① 자원(resource), ② 행위 (verb), ③ 표현 (representations) 의 3가지 요소로 구성된다.
+**구성요소**|**내용**|**표현방법**|
+|:---:|:---:|:---:|
+|자원(resource)|자원|URL(엔드 포인트)|
+|행위(verb)|자원에 대한 행위|HTTP 요청 메서드|
+|표현(representations)|자원에 대한 행위의 구체적 내용|페이로드|
+
+### REST API를 설계하는 중요 원칙
+REST에서 가장 중요한 기본적인 원칙은 두 가지다.
+
+① URI는 리소스를 표현하는데 집중해야 한다
+
+② 행위에 대한 정의는 HTTP 요청 메서드를 통해 해야 한다
+
+위 두 규칙이 RESTful API를 설계하는 중심 규칙이다.
+
+URI는 리소스를 표현해야 한다 URI는 리소스를 표현하는 데 중점을 두어야 한다. 리소스를 식별할 수 있는 이름은 ① 동사보다는 ② 명사를 사용한다.
+
+따라서 리소스 이름에 get 같은 행위에 대한 표현이 들어가서는 안 된다.
+```
+# bad
+GET /getTodos/1
+GET /todos/show/1
+
+# good
+GET /todos/1
+```
+
+### HTTP 요청 메서드
+**HTTP 요청 메서드**|**종류**|**목적**|**페이로드**|
+|:---:|:---:|:---:|:---:|
+|GET|index/retrieve|모든/특정 리소스 취득|X|
+|POST|create|리소스 생성|O|
+|PUT|replace|리소스의 전체 교체|O|
+|PATCH|modify|리소스의 일부 수정|O|
+|DELETE|delete|모든/특정 리소스의 삭제|O|
+
+예제 코드
+GET 요청(전체)
+```javascript
+<!DOCTYPE html>
+<html>
+  <body>
+    <pre></pre>
+    <script>
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("GET", "/todos");
+
+      xhr.send();
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          document.querySelector("pre").innerHTML = xhr.response;
+        } else {
+          console.error("Error", xhr.status, xhr.statusText);
+        }
+      };
+    </script>
+  </body>
+</html>
+```
+
+GET 요청(일부)
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre></pre>
+    <script>
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("GET", "/todos/1");
+
+      xhr.send();
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const result = (document.querySelector(
+            "pre"
+          ).innerHTML = `<h1>${xhr.response}</h1>`);
+        } else {
+          console.error("Error", xhr.status, xhr.statusText);
+        }
+      };
+    </script>
+  </body>
+</html>
+```
+
+POST 요청
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre></pre>
+    <script>
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/todos");
+      xhr.setRequestHeader("content-type", "application/json");
+
+      // 해당 액션이 db.json에 생성된 후에 다시 한번 해당 url로 접근한다면
+      // Error: Insert failed, duplicate id (유효하지 않은 id 값) 이라는 에러가 뜬다
+      xhr.send(JSON.stringify({ id: 4, content: "Angular", completed: false }));
+
+      xhr.onload = () => {
+        if (xhr.status === 200 || xhr.status === 201) {
+          document.querySelector("pre").innerHTML = xhr.response;
+        } else {
+          console.error("Error", xhr.status, xhr.statusText);
+        }
+      };
+    </script>
+  </body>
+</html>
+```
+
+PATCH 요청
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre></pre>
+    <script>
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("PATCH", "/todos/4");
+      xhr.setRequestHeader("content-type", "application/json");
+
+      xhr.send(JSON.stringify({ completed: false }));
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          document.querySelector("pre").innerHTML = xhr.response;
+        } else {
+          console.error("Error", xhr.status, xhr.statusText);
+        }
+      };
+    </script>
+  </body>
+</html>
+```
+
+DELETE 요청
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre></pre>
+    <script>
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("DELETE", "/todos/4");
+
+      xhr.send();
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          document.querySelector("pre").innerHTML = xhr.response;
+        } else {
+          console.error("Error", xhr.status, xhr.statusText);
+        }
+      };
+    </script>
+  </body>
+</html>
+```
+
+### HTTP 상태 코드
+
+2XX
+**상태코드**|**코드명**|**의미**|
+|:---:|:---:|:---:|
+|200|OK|요청이 성공적으로 보내졌음을 의미|
+|201|Created|요청이 성공적이였으며 새로운 리소스가 생성되었음을 의미|
+
+4XX
+**상태코드**|**코드명**|**의미**|
+|:---:|:---:|:---:|
+|400|Bad Request|잘못된 문법으로 인하여 서버가 요청을 이해할 수 없음을 의미|
+|401|Unathorized|비인증(Unathorize)된 요청임을 의미|
+|403|Forbidden|콘텐츠에 접근할 권리를 가지고 있지 않음을 의미|
+|404|Not Found|요청받은 리소스를 찾을 수 없음을 의미|
+
+5XX
+**상태코드**|**코드명**|**의미**|
+|:---:|:---:|:---:|
+|500|Internal Server Error|서버가 처리 방법을 모르는 상황|
+
+## Promise
+
+### 콜백이란?
+자바스크립트에서 콜백함수는 다른 함수의 매개변수로 함수를 전달하고, 어떠한 이벤트가 발생한 후 매개변수로 전달한 함수가 다시 호출되느느 것을 의미합니다.
+
+어떤 일을 다른 객체에게 시키고, 그일이 끝나는 것을 기다리지 않고 끝나고 부를 때까지 다른 일을 하는것을 말합니다.
+이 때문에 동기가 아닌 비동기적으로 처리되는 비동기 방식의 함수라고 할 수 있습니다.
+
+### 프로미스란?
+자바스크립트에서는 비동기 처리를 위한 패턴중 하나로 콜백 함수를 사용합니다.
+
+전통적인 콜백 패턴은 일명 '콜백 헬'로 인해 가독성이 나쁘고 비동기 처리 중 발생한 에러의 처리가 곤란하며 여러 개의 비동기 처리를 한 번에 처리하는데 한계를 느꼈습니다.
+
+프로미스는 ES6에서 도입된, 콜백 함수의 문제점인 비동기 처리를 해결하기 위한 또 하나의 패턴입니다.
+
+```javascript
+// case 1 : 콜백 HELL 🔥
+
+get("/step1", (a) => {
+  get(`/step2/${a}`, (b) => {
+    get(`/step3/${b}`, (c) => {
+      get(`/step4/${c}`, (d) => {
+        console.log(d);
+      });
+    });
+  });
+});
+```
+
+### 프로미스 생성 방법
+Promise 생성자 함수를 new 연산자와 함께 호출하면 프로미스(Promise 객체)를 생성한다.
+
+ES6에서 도입된 Promise는 호스트 객체가 아닌 ECMAScript 사양에 정의된 표준 빌트인 객체다.
+
+Promise 생성자 함수는 비동기 처리를 수행할 콜백 함수를 인수로 전달받는데 이 콜백 함수는 resolve와 reject 함수를 인수로 전달받는다.
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+  if (/* 비동기 처리 성공 */) {
+    resolve('result');
+  } else { /* 비동기 처리 실패 */
+    reject('failure reason');
+  }
+});
+```
+
+Promise 생성자 함수가 인수로 전달받은 콜백 함수 내부에서 비동기 처리를 수행한다. 이때 비동기 처리가 성공하면 resolve를, 실패하면 reject를 호출한다.
+
+### 프로미스의 상태
+프로미스는 다음과 같이 현재 비동기 처리가 어떻게 진행되고 있는지를 나타내는 상태(state)정보를 갖는다.
+**프로미스의 상태 정보**|**의미**|**상태 변경 조건**|
+|:---:|:---:|:---:|
+|pending|비동기 처리가 아직 수행되지 않은 상태|프로미스가 생성된 직후 기본 상태|
+|fulfilled|비동기 처리가 수행된 상태(성공)|resolve 함수 호출|
+|reject|비동기 처리가 수행된 상태(실패)|reject 함수 호출|
+
+![image](https://user-images.githubusercontent.com/78462110/233830645-f66b0313-6f70-4505-8c43-b87bcb376be2.png)
+
+① fulfilled 또는 ② rejected인 상태를 settled 상태라고 한다. settled 상태는 fulfilled 또는 rejected 상태와 상관없이 pending이 아닌 상태로 비동기 처리가 수행된 상태를 말한다.
+
+프로미스는 🔥 pending 상태에서 fulfilled 또는 rejected 상태, 즉 🔥 settled 상태로 변화할 수 있다.
+
+하지만 일단 settled 상태가 되면 더는 다른 상태로 변화할 수 없다.
+
+### 프로미스 빌트인 객체가 제공하는 정적 메서드
+- Promise.resolve/ Promise.reject
+Promise.resolve와 Promise.reject 정적 메서드는 이미 존재하는 값을 래핑하여 프로미스를 생성하기 위해 사용한다.
+
+```javascript
+// 정적 메서드 사용
+const resolvedPromise = Promise.resolve([1, 2, 3]);
+resolvedPromise.then(console.log); // [1, 2, 3]
+```
+위 예제는 다음 예제와 동일하게 동작한다.
+```javascript
+// 생성자 함수를 통해 프로토타입 메서드 사용
+const resolvedPromise = new Promise((resolve) => resolve([1, 2, 3]));
+resolvedPromise.then(console.log); // [1, 2, 3]
+```
+
+- Promise.all
+Promise.all 메서드는 여러 개의 비동기 처리를 모두 병령처리할 때 사용한다.
+
+```javascript
+const requestData1 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(1), 3000));
+const requestData2 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(2), 2000));
+const requestData3 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(3), 1000));
+
+// 세 개의 비동기 처리를 순차적으로 처리
+const res = [];
+requestData1()
+  .then((data) => {
+    res.push(data);
+    return requestData2();
+  })
+  .then((data) => {
+    res.push(data);
+    return requestData3();
+  })
+  .then((data) => {
+    res.push(data);
+    console.log(res); // [1, 2, 3] ⇒ 약 6초 소요
+  })
+  .catch(console.error);
+```
+위 예제는 세 개의 비동기 처리를 순차적으로 처리한다.(then 메서드를 통해)
+
+즉, 앞선 비동기 처리가 완료되면 다음 비동기 처리를 수행한다. 따라서 위 예제는 3 , 2 , 1 초를 다 더한 6초 이상이 소요된다.
+
+따라서 이런 상황에서 Promise.all 메서드를 사용한다면 병렬적으로 처리할 수 있다.
+
+```javascript
+const requestData1 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(1), 3000));
+const requestData2 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(2), 2000));
+const requestData3 = () =>
+  new Promise((resolve) => setTimeout(() => resolve(3), 1000));
+
+Promise.all([requestData1(), requestData2(), requestData3()])
+  .then(console.log) // [ 1, 2, 3 ] ⇒ 약 3초 소요
+  .catch(console.error);
+```
+Promise.all 메서드는 인수로 전달받은 배열의 모든 프로미스가 fulfilled 상태가 되면 종료한다. 따라서 Promise.all 메서드가 종료하는 데 걸리는 시간은 가장 늦게 fulfilled 상태가 되는 프로미스의 처리 시간보다 조금 더 길다. (3초보다 조금 더 소요된다.)
+
+프로미스의 처리 시간에 의해 총 처리 시간이 결정되지만, 순서는 코드의 처리 순서를 보장한다.
+
+첫 번째 프로미스가 가장 나중에 fulfilled 상태가 되어도 Promise.all 메서드는 첫 번째 프로미스가 resolve한 처리 결과부터 차례대로 배열에 저장해 그 배열을 resolve하는 새로운 프로미스를 반환한다.
+
+Promise.all 메서드는 모든 프로미스가 fulfilled 상태가 되면 모든 처리 결과를 배열에 저장해 새로운 프로미스를 반환하므로, 해당 처리중에 rejected가 발생될 경우 에러가 발생한다.
+
+fulfilled 상태가 되는 것을 기다리지 않고 즉시 종료한다
+
+- Promise.race
+Promise.race 메서드는 Promise.all 메서드와 동일하게 프로미스를 요소로 갖는 배열 등의 이터러블을 인수로 전달받는다.
+
+하지만 Promise.race 메서드는 모든 프로미스가 fulfilled 상태가 되는 것을 기다리는 것이 아니라 가장 먼저 fulfilled 상태가 된 프로미스의 처리 결과를 resolve하는 새로운 프로미스를 반환한다.
+```javascript
+Promise.race([
+  new Promise((resolve) => setTimeout(() => resolve(1), 3000)), // 1
+  new Promise((resolve) => setTimeout(() => resolve(2), 2000)), // 2
+  new Promise((resolve) => setTimeout(() => resolve(3), 1000)), // 3
+])
+  .then(console.log) // 3
+  .catch(console.log);
+```
+- Promise.allSettled
+Promise.allSettled 메서드는 프로미스를 요소로 갖는 배열 등의 이터러블을 인수로 전달받는다.
+
+그리고 이름과 알 수 있듯이 전달받은 프로미스가 모두 settled 상태(비동기 처리가 수행된 상태, fulfilled / rejected 상태)가 되면 처리 결과를 배열로 반환한다.
+```javascript
+Promise.allSettled([
+  new Promise((resolve) => setTimeout(() => resolve(1), 2000)),
+  new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Error!")), 1000)
+  ),
+]).then(console.log);
+/*
+[
+  {status: "fulfilled", value: 1},
+  {status: "rejected", reason: Error: Error! at <anonymous>:3:54}
+]
+*/
+```
+
+## 제너레이터와 async await
+### 제너레이터란?
