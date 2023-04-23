@@ -1170,4 +1170,92 @@ console.log(colorRectangle.toString()); // width = 2, height = 4, color = red
 함수의 이름은 동일하지만 매개변수의 타입 또는 개수가 다른 메서드를 구현하고 매개변수에 의해 메서드를 구별하여 호출하는 방식이다.
 자바스크립트는 오버로딩을 지원하지 않지만 arguments 객체를 사용하여 구현할 수는 있다.
 
+## 스프레드 문법
 
+### 스프레드 문법이란?
+ES6에서 도입된 스프레드 문법은 하나로 뭉쳐 있는 여러 값들의 집합을 펼쳐서(전개, 분산하여) 개별적인 값들의 목록으로 만든다. (배열 상태가 아닌 개별적인 값들의 목록 상태이다)
+``` javascript
+let user = { name: "Mike" };
+let info = { age: 30 };
+let fe = ["js", "react"];
+let lang = ["korean", "english"];
+
+console.log("before user: ", user);
+
+user = {
+  ...user,
+  ...info,
+  skills: [...fe, ...lang],
+};
+
+console.log("after user: ", user);
+
+/*
+before user:  { name: 'Mike' }
+after user:  {
+  name: 'Mike',
+  age: 30,
+  skills: [ 'js', 'react', 'korean', 'english' ]
+}
+*/
+```
+
+### 스프레드 문법 사용할 수 있는 대상
+1. Array
+2. String
+3. Map
+4. Set
+5. DOM 컬렉션
+6. arguments와 같이 for of 문으로 순회할 수 있는 이터러블
+
+``` javascript
+// ...[1, 2, 3]은 [1, 2, 3]을 개별 요소로 분리한다(→ 1, 2, 3)
+console.log(...[1, 2, 3]); // 1 2 3
+
+// 문자열은 이터러블이다.
+console.log(..."Hello"); // H e l l o
+
+/* 이터러블이 아닌 일반 객체는 스프레드 문법의 대상이 될 수 없다. */
+console.log(...{ a: 1, b: 2 });
+// TypeError: Found non-callable @@iterator
+```
+
+위 같은 대상에 대해 3가지 상황에서 사용 가능
+1.함수 호출문의 인수 목록에서 사용하는 경우
+- 요소들의 집합인 배열을 펼쳐서 개별적인 값들의 목록으로 만든 후, 이를 함수의 인수 목록으로 전달해야 하는 경우 유용함
+```javascript
+const arr = [1, 2, 3];
+
+// 배열 arr의 요소 중에서 최대값을 구하기 위해 Math.max를 사용한다.
+const max = Math.max(arr); // -> NaN
+
+const max = Math.max(...arr); // -> 3
+```
+
+2.배열 리터럴 내무에서 사용하는 경우
+- 스프레드 문법을 배열 리터럴에 사용하면 ES5에서 사용하던 기존의 방식보다 더욱 간결하고 가독성 좋게 표현 가능
+```javascript
+// ES5
+var arr = [1, 2].concat([3, 4]);
+console.log(arr); // [1, 2, 3, 4]
+
+// ES6
+const arr = [...[1, 2], ...[3, 4]];
+console.log(arr); // [1, 2, 3, 4]
+```
+3.객체 리터럴 내부에서 사용하는 경우
+- Rset 프로퍼티와 함께 스프레드 프로퍼티를 사용하면 객체 리터럴의 프로퍼티 목록에서도 스프레드 문법을 사용가능
+``` javascript
+// 스프레드 프로퍼티
+// 객체 복사(얕은 복사)
+const obj = { x: 1, y: 2 };
+const copy = { ...obj };
+console.log(copy); // { x: 1, y: 2 }
+console.log(obj === copy); // false
+
+// 객체 병합
+const merged = { x: 1, y: 2, ...{ a: 3, b: 4 } };
+console.log(merged); // { x: 1, y: 2, a: 3, b: 4 }
+```
+
+## 구조 분해 할당
