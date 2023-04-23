@@ -1259,3 +1259,123 @@ console.log(merged); // { x: 1, y: 2, a: 3, b: 4 }
 ```
 
 ## 구조 분해 할당
+구조화된 배열과 같은 이터러블 또는 객체를 비구조화, 구조 파괴해서 1개 이상의 변수에 개별적으로 할당하는 것을 말합니다. 배열과 같은 이터러블 또는 객체 리터럴에서 필요한 값만 추출하여 변수에 할당할 때 유용합니다.
+
+### 구조 분해 할당의 종류
+1. 배열 구조분해 할당
+ES6의 배열 구조 분해 할당은 배열의 각 요소를 배열로 추출하여 1개 이상의 변수에 할당합니다.
+이때 배열 구조분해 할당의 대상은 이터러블(순회 가능한 상태)여야  하며, 할당 기준은 배열의 인덱스가 됩니다.
+
+``` javascript
+const arr = [1, 2, 3];
+
+const [one, two, three] = arr;
+/*
+다음과 같습니다
+
+const one = arr[0]
+const two = arr[1]
+const three = arr[2]
+
+const [one, two, three] = [1,2,3]
+*/
+
+console.log(one, two, three); // 1 2 3
+```
+배열 디스트럭처링 할당은 배열과 같은 이터러블에서 필요한 요소만 추출하여 변수에 할당하고 싶을 때 유용
+
+``` javascript
+const str = "hello-world-2021";
+
+console.log(str.split("-"));
+
+const [one, two, three] = str.split("-");
+
+console.log(one);
+console.log(two);
+console.log(three);
+```
+2. 객체 구조분해 할당
+
+1. ES6의 객체 디스트럭처링 할당은 객체의 각 프로퍼티를 객체로부터 추출하여 1개 이상의 변수에 할당한다.
+   이때 객체 디스트럭처링 할당의 대상은 객체여야 하며, 할당 기준은 프로퍼티 키다. (배열처럼 인덱스가 아님)
+   순서는 의미가 없으며 선언된 변수 이름과 프로퍼티가 일치하면 할당된다.
+
+``` javascript
+var user = { age: 25, name: "junhee" };
+
+var { age, name } = user;
+
+/*
+var { age: age, name: name} = user 와 같은 의미 (프로퍼티 축약 표현)
+*/
+
+console.log(age, name); // 25 junhee
+```
+
+2. 반드시 프로퍼티 키와 변수 이름이 같을 필요는 없다.
+``` javascript
+var user = { age: 25, name: "junhee" };
+
+var { age: junheeAge, name: junheeName } = user;
+
+/*
+위 처럼 새롭게 이름을 지정한 경우 프로퍼티 키로 접근하면 에러가 발생한다
+console.log(age, name); // ReferenceError: age is not defined
+*/
+
+console.log(junheeAge, junheeName); // 25 junhee
+
+```
+
+3. 객체 디스트럭처링 할당을 위한 변수에 기본값을 설정할 수 있다. 하지만 넘겨받는 값이 우선이다.
+``` javascript
+var user = { age: 25 };
+
+var { age, name = "default" } = user;
+
+console.log(age, name); // 25 default
+```
+
+4. 객체 디스트럭처링 할당은 객체를 인수로 전달받는 함수의 매개변수에도 사용할 수 있다.
+
+``` javascript
+case 1
+
+function printTodo(todo) {
+  console.log(
+    `할일 ${todo.content}은 ${todo.completed ? "완료" : "비완료"} 상태입니다.`
+  );
+}
+
+case 2
+
+function printTodo({ content, completed }) {
+  console.log(`할일 ${content}은 ${completed ? "완료" : "비완료"} 상태입니다.`);
+}
+
+printTodo({ id: 1, content: "HTML", completed: true });
+
+```
+
+5. 중첩 객체의 경우는 다음과 같이 사용합니다.
+
+```javascript
+const user = {
+  name: "junhee",
+  age: 25,
+  address: {
+    zipCode: 14063,
+    city: "Anyang",
+  },
+};
+
+const {
+  address: { city },
+} = user;
+
+// const city = user.address.city 를 구조 분해 할당하였음
+
+console.log(city); // Anyang
+
+```
