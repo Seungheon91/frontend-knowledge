@@ -1670,9 +1670,7 @@ DOM 트리상에 존재하는 모든 DOM 요소 노드에서 발생한 이벤트
     div.addEventListener("click", () => console.log("DIV"));
   </script>
 </html>
-```
 
-```
 >>>
 
 DIV
@@ -1680,6 +1678,27 @@ BODY
 HTML
 ```
 
+
 ![image](https://user-images.githubusercontent.com/78462110/233822713-5f81d0ea-0343-4a47-9e8d-0c6c8fa2aac7.png)
 
+이벤트 캡처링 단계라면 HTML > BODY > DIV 순으로 상위노드에서 하위 노드로 내려오며 이벤트를 캐치할 것입니다.
+
+하지만 브라우저는 기본적으로 이벤트 버블링 단계인 클릭하고자 한 이벤트 객체의 타깃인 <div> 에 도달한 후 해당 하위 노드에서 상위노드로 돌아가는 과정에서 이벤틀을 캐치하기 때문입니다.
+
+물론 addEventListener 메서드의 세번째 인수(argument)로 옵션인 [, useCaputure] 자리에 boolean 값인 true를 넣어준다면, 캡처링 단계에서도 이벤트 객체를 캐치할 수 있습니다. (기본값은 false로, 버블링 단계에서 이벤트 객체를 캐치합니다.)
+
+![image](https://user-images.githubusercontent.com/78462110/233822967-f0584afe-ce25-4d04-bf93-4c48f1fb6785.png)
+
+``` javascript
+html.addEventListener("click", () => console.log("HTML"), true);
+body.addEventListener("click", () => console.log("BODY"), true);
+div.addEventListener("click", () => console.log("DIV"));
+
+>>>
+
+HTML
+BODY
+DIV
+
+```
 
