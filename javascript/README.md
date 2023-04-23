@@ -1511,12 +1511,17 @@ DOM은 HTMl 문서의 계층적 구조와 정보를 표현하며 이를 제어�
 
 ### DOM 구성요소
 HTML 요소는 렌더링 엔진에 의해 파싱되어 DOM을 구성하는 요소 노드 객체로 변환됨
+
 이때 HTML 요소 어트리뷰트는 어트리뷰트 노드로, HTML 요소의 텍스트 콘텐츠는 텍스트 노드로 변환된다.
+
 DOM은 노드 객체의 계층적인 구조로 구성된다. 노드 객체는 종류가 있고 상속 구조를 갖는다.
+
 노드 객체는 총 12개의 종류(노드 타입)가 있다. 이 중에서 중요한 노드 타입은 다음과 같이 4가지이다.
 
 1. 문서 노드
-`<!DOCTYPE>`
+
+```<!DOCTYPE>```
+
 문서 노드는 DOM 트리의 최상위에 존재하는 루트 노드로서 document 객체를 가리킨다.
 
 document 객체는 브라우저가 렌더링한 HTML 문서 전체를 가리키는 객체로서 전역 객체 window의 document 프로퍼티에 바인딩되어 있다.
@@ -1528,6 +1533,153 @@ document 객체는 브라우저가 렌더링한 HTML 문서 전체를 가리키�
 따라서 window의 document 프로퍼티에 바인딩되어 있는 하나의 document 객체를 바라본다. 즉, HTML 문서당 document 객체는 유일하다.
 
 2. 요소 노드
+``` javascript
+<html> <head> <meta> <link> <body> <ul> <li> <script>
+```
+
+요소 노드는 HTML 요소를 가리키는 객체이다. 요소 노드는 HTML 요소 간의 중첩에 의해 부자 관계를 가지며, 이 부자 관계를 통해 정보를 구조화한다.
 
 3. 어트리뷰트 노드
+``` javascript
+charset="UTF"
+
+rel="stylesheet"
+...
+
+id="apple"
+```
+어트리뷰트 노드는 HTML 요소의 어트리뷰트를 가리키는 객체다. 어트리뷰트 노드는 어트리뷰트가 지정된 HTML 요소의 요소 노드와 연결되어 있다.
+
+
 4. 텍스트 노드
+텍스트 노드는 HTML 요소와 텍스트를 가리키는 객체다. 요소 노드가 문서의 구조를 표현한다면 텍스트 노드는 문서의 정보를 표현한다고 할 수 있다.
+
+## 이벤트
+
+### 마우스 이벤트 타입
+**이벤트 타입**|**이벤트 발생 시점**|
+|:---:|:---:|
+|click|마우스 버튼을 클릭|
+|dbclcik|마우스 버튼 더블 클릭|
+|mousedown|마우스 버튼 누르고 있을 때|
+|mouseup|누르고 있던 마우스 버튼 뗄 때|
+|mousemove|마우스 커서 움직일 때|
+|mouseenter|마우스 커서를 HTML 요소 안으로 이동했을 때 (버블링 x)|
+|mouseover|마우스 커서를 HTML 요소 안으로 이동했을 때 (버블링 o)|
+|mouseleave|마우스 커서를 HTML 요소 밖으로 이동했을 때 (버블링 x)|
+|mouseout|마우스 커서를 HTML 요소 밖으로 이동했을 때 (버블링 o)|
+
+### 키보드 이벤트
+
+### 포커스 이벤트
+
+### 폼 이벤트
+
+### 값 변경 이벤트
+
+### DOM 뮤테이션 이벤트
+
+### 뷰 이벤트
+
+### 리소스 이벤트
+
+### 이벤트 핸들러 등록 방식
+1. 이벤트 핸들러 어트리뷰트 방식
+``` javascript
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="sayHi('Lee')">Click me!</button>
+    <script>
+      function sayHi(name) {
+        console.log(`Hi! ${name}.`);
+      }
+    </script>
+  </body>
+</html>
+```
+
+2. 이벤트 핸들러 프로퍼티 방식
+```javascript
+<!DOCTYPE html>
+<html>
+  <body>
+    <button>Click me!</button>
+    <script>
+      const $button = document.querySelector("button");
+
+      // 이벤트 핸들러 프로퍼티에 이벤트 핸들러를 바인딩 (익명 함수로 가능)
+      $button.onclick = function () {
+        console.log("button click");
+      };
+    </script>
+  </body>
+</html>
+```
+
+3. addEventListener 메서드 방식
+``` javascript
+<html>
+  <body>
+    <button>Click me!</button>
+    <em></em>
+
+    <script>
+      const $button = document.querySelector("button");
+      const $em = document.querySelector("em");
+
+      $button.addEventListener("click", function () {
+        $em.innerHTML = "Button Cliked 1";
+      });
+    </script>
+  </body>
+</html>
+
+```
+
+### 이벤트 전파(propagation)
+DOM 트리상에 존재하는 모든 DOM 요소 노드에서 발생한 이벤트는 DOM 트리를 통해 전파됩니다. 이를 이벤트 전파라고합니다.
+
+사용자의 다양한 입력을 통해 동적으로 생성되는 이벤트 객체는 이벤트를 발생시킨 타깃을 중심으로 DOM 트리를 통해 전파됩니다.
+
+전파되는 방향에 따라 3단계로 구분
+- 캡처링 단계 : 이벤트가 상위 요소에서 하위 요소 방향으로 전파
+- 타깃 단계 : 이벤트가 이벤트 타깃에 도달
+- 버블링 단계 : 이벤트가 하위 요소에서 상위 요소 방향으로 전파
+
+![image](https://user-images.githubusercontent.com/78462110/233822604-1ce2d8ef-cc36-4b1f-86cd-601ba8789b77.png)
+
+브라우저는 기본적으로 이벤트 버블링 단계에서 이벤트를 캐치합니다.
+
+``` javascript
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>Click me</div>
+  </body>
+  <script>
+    const html = document.querySelector("html");
+    const body = document.querySelector("body");
+    const div = document.querySelector("div");
+
+    html.addEventListener("click", () => console.log("HTML"));
+    body.addEventListener("click", () => console.log("BODY"));
+    div.addEventListener("click", () => console.log("DIV"));
+  </script>
+</html>
+```
+
+```
+>>>
+
+DIV
+BODY
+HTML
+```
+
+![image](https://user-images.githubusercontent.com/78462110/233822713-5f81d0ea-0343-4a47-9e8d-0c6c8fa2aac7.png)
+
+
