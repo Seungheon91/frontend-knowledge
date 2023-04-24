@@ -2282,7 +2282,7 @@ Promise.resolve()
 
 프로미스의 후속 처리 메서드의 콜백 함수는 태스크 큐가 아니라 마이크로태스크 큐에 저장되기 때문이다.
 
-![image](https://user-images.githubusercontent.com/78462110/233828260-693ec61d-33e6-45e4-8779-b683885b76e8.png)
+참고 - https://dev.to/lydiahallie/javascript-visualized-promises-async-await-5gke
 <br/><br/>
 	
 ### 태스크 큐와 마이크로태스크 큐 중 어떤 것이 먼저 실행되는가?
