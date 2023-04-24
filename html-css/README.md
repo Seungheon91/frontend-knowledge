@@ -15,6 +15,7 @@
 - [CSS-in-JS](#CSS-in-JS)
 - [CSS 전처리기](#CSS-전처리기)
 - [padding과 margin 차이](#padding과-margin-차이)
+- [svg](#svg)
 
 <br></br>
 
@@ -364,4 +365,5 @@ SVG는 Scalable Vector Graphics라는 뜻인데, 번역하자면 확장가능한
   points - 포인트들의 목록, 각 숫자는 공백, 쉼표, EOL 또는 줄 바꿈 문자로 구분된다. 각 포인트는 반드시 x 좌표와 y 좌표를 가지고 있어야 한다. 따라서 포인트 목록 (0,0), (1,1) 및 (2,2)는 "0 0, 1 1, 2 2"라고 쓸 수 있다.
   
 - `<path>` : 선과 곡선, 호 등 다양한 형태를 그릴 수 있는 가장 강력한 엘리먼트
- 링크 - https://developer.mozilla.org/ko/docs/Web/SVG/Tutorial/Paths
+
+  링크 - https://developer.mozilla.org/ko/docs/Web/SVG/Tutorial/Paths
