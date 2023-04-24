@@ -3,7 +3,7 @@
 
 # 📝 Contents
 - [Html/CSS](https://github.com/Seungheon91/frontend-knowledge/tree/main/html-css)
-- [자바스크립트](https://github.com/Seungheon91/frontend-knowledge/tree/main/javascript)
+- [자바스크립트](https://github.com/Seungheon91/frontend-knowledge/tree/main/javascript/javascript.md)
 - [자료구조 & 알고리즘](https://github.com/Seungheon91/frontend-knowledge/tree/main/javascript-algorithms)
 - [리액트](https://github.com/Seungheon91/frontend-knowledge/tree/main/react)
 - [뷰](https://github.com/Seungheon91/frontend-knowledge/tree/main/vue)
