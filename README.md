@@ -1,5 +1,5 @@
 # Description
-프론트 엔드를 하면서 필요한 지식들을 정리하려고 만들었습니다.
+프론트 엔드를 하면서 필요한 지식들을 정리
 
 # 📝 Contents
 - [Html/CSS](https://github.com/Seungheon91/frontend-knowledge/tree/main/html-css)
