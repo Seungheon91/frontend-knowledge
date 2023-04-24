@@ -345,7 +345,7 @@ SVG는 Scalable Vector Graphics라는 뜻인데, 번역하자면 확장가능한
 
   ry - 사각형의 둥근 꼭짓점의 y 방향으로의 반지름이다.
   
- - `<circle>` : 원
+- `<circle>` : 원
   ```javascript
   <circle cx="25" cy="75" r="20" />
   ```
@@ -355,7 +355,7 @@ SVG는 Scalable Vector Graphics라는 뜻인데, 번역하자면 확장가능한
 
   cy (circle y)- 원의 중심 중 y 값을 의미한다.
   
- - `<polyline>` : 연결된 직선들의 그룹
+- `<polyline>` : 연결된 직선들의 그룹
   ```javascript
   <polyline
   points="60 110, 65 120, 70 115, 75 130, 80 125, 85 140, 90 135, 95 150, 100 145"
@@ -363,5 +363,5 @@ SVG는 Scalable Vector Graphics라는 뜻인데, 번역하자면 확장가능한
   ```
   points - 포인트들의 목록, 각 숫자는 공백, 쉼표, EOL 또는 줄 바꿈 문자로 구분된다. 각 포인트는 반드시 x 좌표와 y 좌표를 가지고 있어야 한다. 따라서 포인트 목록 (0,0), (1,1) 및 (2,2)는 "0 0, 1 1, 2 2"라고 쓸 수 있다.
   
- - `<path>` : 선과 곡선, 호 등 다양한 형태를 그릴 수 있는 가장 강력한 엘리먼트
+- `<path>` : 선과 곡선, 호 등 다양한 형태를 그릴 수 있는 가장 강력한 엘리먼트
  링크 - https://developer.mozilla.org/ko/docs/Web/SVG/Tutorial/Paths
