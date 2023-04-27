@@ -218,6 +218,8 @@ visibility:hidden -> 보이지만 않고 해당 공간 존재, width와 height�
 
 5. sticky : 스크롤 위치가 임계점에 이르면 position: fixed와 같이 박스를 화면에 고정할 수 있는 속성으로 스크롤 영역 기준으로 배치한다.
 
+<br></br>
+
 ## float
 Float는 CSS 위치지정 속성입니다.
 
