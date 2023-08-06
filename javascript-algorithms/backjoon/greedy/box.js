@@ -23,8 +23,24 @@ console.log(cubes);
 
 let size = 19;
 size = nearestSquare(length);
-console.log(size);
 size = Math.min(size, nearestSquare(width));
-console.log(size);
 size = Math.min(size, nearestSquare(height));
-console.log(size);
+
+let res = 0;
+let used = 0;
+
+for (let i = size; i >= 0; i--) {
+  used *= 8;
+  cur = 2 ** i;
+
+  let required =
+    parseInt(length / cur) * parseInt(width / cur) * parseInt(height / cur) -
+    used;
+
+  let usage = Math.min(required, cubes[i]);
+  res += usage;
+  used += usage;
+}
+
+if (used == length * width * height) console.log(res);
+else console.log(-1);
